@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :admins
 
-  # Verificando se o usuário está autenticado (admin) e direcionando para a página
+  # Verificando se o usuário está autenticado (admin) e direcionando para a página.
   authenticated :admin do
     root to: "admin#index", as: :admin_root
   end
