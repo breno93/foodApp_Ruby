@@ -1,3 +1,11 @@
 Rails.application.routes.draw do
-root "home#index"
+  devise_for :admins
+
+  # Verificando se o usuário está autenticado (admin) e direcionando para a página
+  authenticated :admin do
+    root to: "admin#index", as: :admin_root
+  end
+
+  get "admin" => "admin#index"
+  root "home#index"
 end
