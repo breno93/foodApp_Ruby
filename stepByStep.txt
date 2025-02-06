@@ -63,3 +63,18 @@ end
 5 - admin_controller.rb -> layout "admin"
 6 - No categories_controller.rb -> class Admin::CategoriesController < AdminController (mudo para AdminController)
 7 - No /layouts/admin.html.erb -> altero para link_to admin_categories_path
+
+
+
+#### Category II ####
+1 - /views/admin/categories/_form.html.erb (adiciono o [:admin, admin_category])
+        <%= form_with(model: [:admin, admin_category], class: "contents") do |form| %>
+2 - /views/admin/categories/edit.html.erb (adiciono o [:admin, @admin_category])
+        <%= link_to "Show this category", [:admin, @admin_category], class:...
+3 - /app/controllers/categories_controller (:admin_category).permit(:name...) altero para
+        params.expect(category: [ :name, :description, :text ])
+4 - /views/admin/categories show.html.erb (adiciono admin_category_path)
+        <%= button_to "Destroy this category", admin_category_path(@admin_category), method:...
+5 - /app/controllers/admin/categories_controller.rb
+        redirect_to @admin_category alterar para: redirect_to admin_category_path(@admin_category)
+
