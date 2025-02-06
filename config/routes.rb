@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :categories
+  end
   devise_for :admins
 
   # Verificando se o usuário está autenticado (admin) e direcionando para a página.

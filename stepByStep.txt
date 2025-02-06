@@ -1,0 +1,65 @@
+#### Crate Projetc ####
+1 - rails new . --css tailwind
+2 - Gemfile -> "font-awesome-sass", "~> 6.5.1”
+3 - application.html.erb -> <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css"/>
+
+
+
+#### Devise ####
+1 - bundle add devise
+2 - rails generate devise:install
+
+# No arquivo routes.rb adicione o seguinte código:
+Rails.application.routes.draw do
+  root "home#index"
+end
+
+# Crie o arquivo home_controller.rb na pasta controllers
+class HomeController < ApplicationController
+    def index
+    end
+end
+
+# Crie a pasta home dentro de views crie o arquivo index.html.erb:
+<h2>Home</h2>
+<%= icon('fa-brands', 'font-awesome')%>
+<%= icon('fa-solid', 'user-secret')%>
+
+
+
+#### Cadastro e Login ####
+1 - rails generate devise Admin
+2 - rails db:migrate
+
+#No arquivo routes.rb:
+Rails.application.routes.draw do
+  devise_for :admins
+  root "home#index"
+
+  authenticated :admin_user do
+    root to: "admin#index", as: :admin_root
+  end 
+end
+
+#Crie o arquivo admin_controller.rb na pasta controllers:
+class AdminController < ApplicationController
+    before_action :authenticate_admin!
+    def index
+
+    end
+end
+
+#Crie a pasta admin dentro de views e crie o arquivo index.html.erb:
+<h2>Admin</h2>
+
+
+
+#### Category ####
+1 - rails g scaffold admin::category name:string description:text
+  *estou utilizando o admin::category, para que essa category fique na jurisdição do admin
+2 - No arquivo migrate categories deixar nome da tabela de apenas categories.
+3 - Deixar model categories dentro da raiz de models e apagar o Admin::
+4 - No Controller/admin/categories_controller.rb apagar onde tem Admin::Category
+5 - admin_controller.rb -> layout "admin"
+6 - No categories_controller.rb -> class Admin::CategoriesController < AdminController (mudo para AdminController)
+7 - No /layouts/admin.html.erb -> altero para link_to admin_categories_path
