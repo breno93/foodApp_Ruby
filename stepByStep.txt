@@ -78,3 +78,41 @@ end
 5 - /app/controllers/admin/categories_controller.rb
         redirect_to @admin_category alterar para: redirect_to admin_category_path(@admin_category)
 
+
+
+#### Add Image upload ####
+  *Tive que instalar libvips para que a img fosse renderizada:
+  sudo apt-get update
+  sudo apt-get install libvips42
+
+1 - Gemfile, descomentar: gem "image_processing", "~> 1.2" e bundle install e rails active_storage:install
+2 - /app/models/category.rb
+        class Category < ApplicationRecord
+  has_one_attached :image do |attachable|
+    attachable.variant :thumb, resize_to_limit: [ 50, 50 ]
+  end
+end
+
+3 - No arquivo _form.html.erb
+      <div class="my-5">
+    <%= form.label :image %>
+    <%= form.file_field :image, rows: 4, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+4 - No arquivo categories_controller.rb
+          # Only allow a list of trusted parameters through.
+    def admin_category_params
+      params.require(:category).permit(:name, :description, :image)
+    end
+
+5 - No arquivo _category.html.erb
+         <p class="my-5">
+    <strong class="block font-medium mb-1">Image:</strong>
+    <%= category.image.present? ? image_tag(category.image, size: "200x200", class: "rounded-lg") : image_tag("<https://via.placeholder.com/200>") %>
+  </p>
+
+6 - no arquivo index.html.erb
+         <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-800 underline">
+                    <%= c.image.present? ? image_tag(c.image.variant(:thumb)) : image_tag("https://via.placeholder.com/50") %>
+                  </td>
+  
