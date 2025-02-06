@@ -31,7 +31,7 @@ end
 1 - rails generate devise Admin
 2 - rails db:migrate
 
-#No arquivo routes.rb:
+3 - No arquivo routes.rb:
 Rails.application.routes.draw do
   devise_for :admins
   root "home#index"
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   end 
 end
 
-#Crie o arquivo admin_controller.rb na pasta controllers:
+4 - Crie o arquivo admin_controller.rb na pasta controllers:
 class AdminController < ApplicationController
     before_action :authenticate_admin!
     def index
@@ -115,4 +115,22 @@ end
          <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-800 underline">
                     <%= c.image.present? ? image_tag(c.image.variant(:thumb)) : image_tag("https://via.placeholder.com/50") %>
                   </td>
+
+
+
+#### Products ####
+1 - create_table :admin_products do |t| mudar para: create_table :products do |t| e após rails db:migrate  
+2 - /app/model/admin/product.rb alterar para: belongs_to :category      
+3 - /app/controllers/admin/products_controller.rb tirar onde faz referencia com Admin::
+        Admin::Product.find(params.expect(:id)) -> Product.find(params.expect(:id))
+    Alterar também:     
+        # Only allow a list of trusted parameters through.
+        params.require(:product).permit(:name, :description, :price, :category_id, :active)
+
+4 - /layouts/admin.html.erb 
+        onde está referenciando ao products <span class="hidden md:inline-block">Product</span>
+        atualizo o link to: <%= link_to admin_products_path...
+
+5 - em products_controller.rb 
+        class Admin::ProductsController < ApplicationController atualizar: class Admin::ProductsController < AdminController
   
