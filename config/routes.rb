@@ -4,15 +4,16 @@ Rails.application.routes.draw do
     resources :products do
       resources :stocks
     end
+
     resources :categories
   end
   devise_for :admins
+  root "home#index"
 
-  # Verificando se o usuário está autenticado (admin) e direcionando para a página.
-  authenticated :admin do
+  authenticated :admin_user do
     root to: "admin#index", as: :admin_root
   end
 
   get "admin" => "admin#index"
-  root "home#index"
+  get "category" => "category#index"
 end
