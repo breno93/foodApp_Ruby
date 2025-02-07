@@ -49,7 +49,12 @@ class Admin::CategoriesController < AdminController
 
   # DELETE /admin/categories/1 or /admin/categories/1.json
   def destroy
-    @admin_category.destroy!
+    if @admin_category.products.any? # Verifica se há produtos vinculados
+      flash[:alert] = "Não é possível excluir a categoria porque há produtos vinculados a ela."
+    else
+      @admin_category.destroy!
+      flash[:notice] = "Categoria excluída com sucesso."
+    end
 
     respond_to do |format|
       format.html { redirect_to admin_categories_path, status: :see_other, notice: "Category was successfully destroyed." }
