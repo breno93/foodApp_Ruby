@@ -6,4 +6,5 @@ class Product < ApplicationRecord
   # Isso define um relacionamento de "muitos para um"
   belongs_to :category
   has_many :stocks, dependent: :destroy
+  has_many :order_products
 end
