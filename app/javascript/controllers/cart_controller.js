@@ -25,8 +25,49 @@ export default class extends Controller {
     }
 
     const totalEl = document.createElement("div")
-    totalEl.innerText = `Total: ${total}`
+    totalEl.innerText = `Total R$: ${total}`
     let totalContainer = document.getElementById("total")
     totalContainer.appendChild(totalEl)
+  }
+
+  clear(){
+    localStorage.removeItem("cart")
+    window.location.reload()
+  }
+
+  removeFromCart(event){
+    const cart = JSON.parse(localStorage.getItem("cart"))
+    const id = event.target.value
+    const index = cart.findIndex(item => item.id === id)
+    cart.splice(index, 1)
+    localStorage.setItem("cart", JSON.stringify(cart))
+    window.location.reload()
+  }
+
+  checkout(){
+    const cart = JSON.parse(localStorage.getItem("cart"))
+    const payload = {
+      authenticity_token: "",
+      cart: cart
+    }
+
+    const csrfToken = document.querySelector("[name='csrf-token']").content
+    fetch("/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken
+      },
+      body: JSON.stringify(payload)
+    }).then(response => {
+      if(response.ok){
+        window.location.href = body.url
+      } else {
+        const errorEl = document.createElement("div")
+        errorEl.innerText = `Erro ao processar seu pedido ${body.error}`
+        let errorContainer = document.getElementById("errorContainer")
+        errorContainer.appendChild(errorEl)
+      }
+    })
   }
 }
