@@ -65,5 +65,6 @@ group :test do
 end
 
 gem "font-awesome-sass", "~> 6.5.2"
-
 gem "devise", "~> 4.9"
+gem "stripe"
+gem "dotenv-rails"

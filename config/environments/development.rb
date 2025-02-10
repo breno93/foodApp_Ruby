@@ -73,4 +73,6 @@ Rails.application.configure do
   config.assets.debug = false
   config.assets.compile = true
   config.public_file_server.enabled = true
+
+  Rails.configuration.stripe = { secret_key: ENV["STRIPE_SECRET_KEY"] }
 end
