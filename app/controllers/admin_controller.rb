@@ -8,9 +8,9 @@ class AdminController < ApplicationController
       # Número de vendas (sales): conta quantos pedidos foram feitos hoje.
       sales: Order.where(created_at: Time.now.midnight..Time.now).count,
       # Receita total (revenue): soma o valor total dos pedidos de hoje.
-      revenue: Order.where(created_at: Time.now.midnight..Time.now).sum(:total).round(),
+      revenue: Order.where(created_at: Time.now.midnight..Time.now).sum(:total).to_f.round,
       # Média por venda (avg_sale): calcula a média dos valores das vendas de hoje.
-      avg_sale: Order.where(created_at: Time.now.midnight..Time.now).average(:total).round(),
+      avg_sale: Order.where(created_at: Time.now.midnight..Time.now).average(:total).to_f.round,
       # Média de produtos por venda
       per_sale: OrderProduct.joins(:order).where(
 
